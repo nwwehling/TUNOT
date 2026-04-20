@@ -19,40 +19,50 @@ export default function CourseDetail({ course }: { course: Course }) {
       </section>
 
       <section>
-        <div className="flex items-baseline justify-between mb-3">
-          <h2 className="font-serif text-2xl text-tu-greenDark">Notenverteilung</h2>
-          <div className="flex gap-2 font-sans text-sm">
-            {course.distributions.map((d, i) => (
-              <button
-                key={d.semester}
-                type="button"
-                onClick={() => setSemIdx(i)}
-                className={`px-3 py-1 border rule ${i === semIdx ? "bg-tu-green text-tu-black border-tu-green" : "bg-white hover:bg-tu-greenFaint"}`}
-              >
-                {d.semester}
-              </button>
-            ))}
-          </div>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="section-heading m-0 border-0 p-0">Notenverteilung</h2>
+          {course.distributions.length > 1 && (
+            <div className="flex gap-1.5 font-sans text-xs">
+              {course.distributions.map((d, i) => (
+                <button
+                  key={d.semester}
+                  type="button"
+                  onClick={() => setSemIdx(i)}
+                  className={`px-3 py-1.5 rounded border transition-colors ${
+                    i === semIdx
+                      ? "bg-tu-greenDark text-white border-tu-greenDark"
+                      : "bg-card border-rule text-muted hover:bg-tu-greenFaint hover:border-tu-greenSoft"
+                  }`}
+                >
+                  {d.semester}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
-        <GradeBarChart distribution={active} />
-        <div className="font-sans text-xs text-muted mt-2">
+        <div className="bg-card rounded-card shadow-card border border-rule p-5">
+          <GradeBarChart distribution={active} />
+        </div>
+        <div className="font-sans text-xs text-muted mt-2 pl-1">
           Noten von 1,0 (sehr gut) bis 5,0 (nicht bestanden). Anzahl Studierender je Note.
         </div>
       </section>
 
       <section>
-        <h2 className="font-serif text-2xl text-tu-greenDark mb-3">Beschreibung</h2>
-        <p className="max-w-prose font-serif">{course.description}</p>
+        <h2 className="section-heading">Beschreibung</h2>
+        <p className="max-w-prose font-serif text-ink/85 leading-relaxed">{course.description}</p>
       </section>
 
-      <section>
-        <h2 className="font-serif text-2xl text-tu-greenDark mb-3">Bewertungen</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {course.reviews.map((r, i) => (
-            <ReviewCard key={i} review={r} />
-          ))}
-        </div>
-      </section>
+      {course.reviews.length > 0 && (
+        <section>
+          <h2 className="section-heading">Bewertungen</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {course.reviews.map((r, i) => (
+              <ReviewCard key={i} review={r} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

@@ -4,24 +4,23 @@ export type SidebarItem = { href: string; label: string; active?: boolean };
 
 export default function Sidebar({ items, title }: { items: SidebarItem[]; title?: string }) {
   return (
-    <aside className="w-full md:w-56 shrink-0 font-sans text-sm">
-      {title && (
-        <div className="label mb-3 text-tu-greenDark">{title}</div>
-      )}
-      <ul className="divide-y rule border-y rule bg-white">
+    <aside className="w-full md:w-52 shrink-0 font-sans text-sm">
+      {title && <div className="label mb-3">{title}</div>}
+      <nav className="bg-card rounded-card shadow-subtle border border-rule overflow-hidden">
         {items.map(it => (
-          <li key={it.href}>
-            <Link
-              href={it.href}
-              className={`block px-4 py-2.5 no-underline hover:no-underline hover:bg-tu-greenFaint ${
-                it.active ? "bg-tu-greenSoft font-semibold" : ""
-              }`}
-            >
-              {it.label}
-            </Link>
-          </li>
+          <Link
+            key={it.href}
+            href={it.href}
+            className={`flex items-center gap-2 px-4 py-2.5 border-b border-rule last:border-b-0 no-underline hover:no-underline transition-colors ${
+              it.active
+                ? "bg-tu-greenFaint text-tu-greenDark font-semibold border-l-2 border-l-tu-greenDark pl-[14px]"
+                : "hover:bg-fill text-ink"
+            }`}
+          >
+            {it.label}
+          </Link>
         ))}
-      </ul>
+      </nav>
     </aside>
   );
 }
