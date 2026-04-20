@@ -1,16 +1,12 @@
 import Link from "next/link";
-import { courses, coursesByBereich } from "@/lib/dummyCourses";
+import { getBereichCounts, getPopularCourses } from "@/lib/data";
 import CourseCard from "@/components/CourseCard";
 import Sidebar from "@/components/Sidebar";
 import { bereichSidebar } from "@/lib/sidebar";
 
 export default function Home() {
-  const counts = {
-    pflicht: coursesByBereich("pflicht").length,
-    wahlpflicht: coursesByBereich("wahlpflicht").length,
-    wahl: coursesByBereich("wahl").length,
-  };
-  const popular = courses.filter(c => c.distributions.length >= 2).slice(0, 6);
+  const counts = getBereichCounts();
+  const popular = getPopularCourses();
 
   return (
     <div className="flex flex-col md:flex-row gap-8">

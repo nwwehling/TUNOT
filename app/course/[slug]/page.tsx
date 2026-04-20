@@ -2,18 +2,18 @@ import { notFound } from "next/navigation";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import CourseDetail from "@/components/CourseDetail";
 import Sidebar from "@/components/Sidebar";
-import { courses, getCourse } from "@/lib/dummyCourses";
+import { getAllCourses, getCourseBySlug } from "@/lib/data";
 import { bereichSidebar } from "@/lib/sidebar";
 import { BEREICH_LABEL, SUBTYPE_LABEL } from "@/lib/types";
 
 export function generateStaticParams() {
-  return courses.map(c => ({ slug: c.slug }));
+  return getAllCourses().map(c => ({ slug: c.slug }));
 }
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const course = getCourse(slug);
-  if (!course) notFound();
+  const course = getCourseBySlug(slug);
+  if (!course) return notFound();
 
   const bereichHref =
     course.bereich === "pflicht" ? "/pflichtbereich"

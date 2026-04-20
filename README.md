@@ -1,6 +1,6 @@
 # TUNOT
 
-A course grade viewer for TU Berlin Informatik B.Sc. students. Browse courses by study area (Pflicht, Wahlpflicht, Wahl), view grade distributions, and explore course details.
+A course grade viewer for TU Darmstadt Informatik B.Sc. students. Browse courses by study area (Pflicht, Wahlpflicht, Wahl), view grade distributions, and explore course details.
 
 ## Tech Stack
 

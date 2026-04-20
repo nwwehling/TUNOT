@@ -2,7 +2,7 @@ import Link from "next/link";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeading from "@/components/PageHeading";
 import Sidebar from "@/components/Sidebar";
-import { coursesByWahlSubtype } from "@/lib/dummyCourses";
+import { getCoursesByWahlSubtype } from "@/lib/data";
 import { bereichSidebar } from "@/lib/sidebar";
 
 const subtypes: { slug: "vorlesung" | "seminar" | "praktika" | "lehre"; title: string; desc: string }[] = [
@@ -22,7 +22,7 @@ export default function Page() {
           sub="Kurse nach freier Wahl — gegliedert in Vorlesungen, Seminare und Praktika." />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {subtypes.map(s => {
-            const count = coursesByWahlSubtype(s.slug).length;
+            const count = getCoursesByWahlSubtype(s.slug).length;
             return (
               <Link key={s.slug} href={`/wahlbereich/${s.slug}`}
                 className="block border rule bg-white p-6 hover:bg-tu-greenFaint transition-colors no-underline hover:no-underline">

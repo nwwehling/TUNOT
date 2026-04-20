@@ -2,11 +2,11 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import PageHeading from "@/components/PageHeading";
 import Sidebar from "@/components/Sidebar";
 import SemesterGrid from "@/components/SemesterGrid";
-import { pflichtBySemester } from "@/lib/dummyCourses";
+import { getPflichtBySemester } from "@/lib/data";
 import { bereichSidebar } from "@/lib/sidebar";
 
 export default function Page() {
-  const bySem = pflichtBySemester();
+  const bySem = getPflichtBySemester();
   const totalCourses = Object.values(bySem).flat().length;
   const totalCP = Object.values(bySem).flat().reduce((s, c) => s + c.ects, 0);
 

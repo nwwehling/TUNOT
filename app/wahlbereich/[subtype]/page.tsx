@@ -4,7 +4,7 @@ import CourseList from "@/components/CourseList";
 import FachgebietTabs from "@/components/FachgebietTabs";
 import PageHeading from "@/components/PageHeading";
 import Sidebar from "@/components/Sidebar";
-import { coursesByWahlSubtype } from "@/lib/dummyCourses";
+import { getCoursesByWahlSubtype } from "@/lib/data";
 import { bereichSidebar } from "@/lib/sidebar";
 import { SUBTYPE_LABEL, type Subtype } from "@/lib/types";
 
@@ -18,7 +18,7 @@ export default async function Page({ params }: { params: Promise<{ subtype: stri
   const { subtype } = await params;
   if (!valid.includes(subtype as Subtype)) notFound();
   const sub = subtype as Subtype;
-  const list = coursesByWahlSubtype(sub);
+  const list = getCoursesByWahlSubtype(sub);
 
   return (
     <div className="flex flex-col md:flex-row gap-8">

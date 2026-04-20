@@ -2,11 +2,11 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import CourseList from "@/components/CourseList";
 import PageHeading from "@/components/PageHeading";
 import Sidebar from "@/components/Sidebar";
-import { coursesByBereich } from "@/lib/dummyCourses";
+import { getCoursesByBereich } from "@/lib/data";
 import { bereichSidebar } from "@/lib/sidebar";
 
 export default function Page() {
-  const list = coursesByBereich("wahlpflicht");
+  const list = getCoursesByBereich("wahlpflicht");
   return (
     <div className="flex flex-col md:flex-row gap-8">
       <Sidebar title="Studienbereiche" items={bereichSidebar("/wahlpflichtbereich")} />
