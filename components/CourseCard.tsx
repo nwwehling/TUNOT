@@ -8,9 +8,9 @@ export default function CourseCard({ course }: { course: Course }) {
   return (
     <Link
       href={`/course/${course.slug}`}
-      className="group block bg-card rounded-card shadow-card hover:shadow-card-hover transition-all duration-200 no-underline hover:no-underline border border-rule hover:border-tu-greenSoft"
+      className="group flex flex-col bg-card rounded-card shadow-card hover:shadow-card-hover transition-all duration-200 no-underline hover:no-underline border border-rule hover:border-tu-greenSoft h-full"
     >
-      <article className="p-5">
+      <article className="p-5 flex flex-col flex-1">
         {course.moduleId && (
           <div className="font-sans text-[10px] tracking-widest text-muted tabular-nums mb-1.5 uppercase">{course.moduleId}</div>
         )}
@@ -27,7 +27,7 @@ export default function CourseCard({ course }: { course: Course }) {
             ))}
           </div>
         )}
-        <div className="grid grid-cols-3 gap-2 border-t border-rule pt-3 mt-1">
+        <div className="grid grid-cols-3 gap-2 border-t border-rule pt-3 mt-auto">
           <Stat label="Ø Note" value={latest.avgGrade.toFixed(2)} />
           <Stat label="Bestanden" value={`${Math.round(latest.passRate * 100)}%`} />
           <Stat label="Prüflinge" value={latest.totalStudents.toString()} />
