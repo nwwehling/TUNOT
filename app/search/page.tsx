@@ -1,22 +1,36 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { getAllCourses } from "@/lib/data";
 import { filterCourses } from "@/lib/filters";
 import { BEREICH_LABEL, SUBTYPE_LABEL } from "@/lib/types";
+import type { Course } from "@/lib/types";
 import CourseCard from "@/components/CourseCard";
 import Sidebar from "@/components/Sidebar";
 import { bereichSidebar } from "@/lib/sidebar";
 
-const allCourses = getAllCourses();
+const hardcodedCourses = getAllCourses();
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
+  const [firestoreCourses, setFirestoreCourses] = useState<Course[]>([]);
+
+  useEffect(() => {
+    fetch("/api/courses/firestore")
+      .then(r => r.json())
+      .then(setFirestoreCourses)
+      .catch(() => {});
+  }, []);
+
+  const allCourses = useMemo(
+    () => [...hardcodedCourses, ...firestoreCourses],
+    [firestoreCourses]
+  );
 
   const results = useMemo(() => {
     if (!query.trim()) return [];
     return filterCourses(allCourses, { query });
-  }, [query]);
+  }, [query, allCourses]);
 
   const hasQuery = query.trim().length > 0;
 

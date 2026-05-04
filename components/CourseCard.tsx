@@ -28,9 +28,15 @@ export default function CourseCard({ course }: { course: Course }) {
           </div>
         )}
         <div className="grid grid-cols-3 gap-2 border-t border-rule pt-3 mt-auto">
-          <Stat label="Ø Note" value={latest.avgGrade.toFixed(2)} />
-          <Stat label="Bestanden" value={`${Math.round(latest.passRate * 100)}%`} />
-          <Stat label="Prüflinge" value={latest.totalStudents.toString()} />
+          {latest ? (
+            <>
+              <Stat label="Ø Note" value={latest.avgGrade.toFixed(2)} />
+              <Stat label="Bestanden" value={`${latest.passRate.toFixed(1)}%`} />
+              <Stat label="Prüflinge" value={latest.totalStudents.toString()} />
+            </>
+          ) : (
+            <div className="col-span-3 font-sans text-[10px] text-muted">Noch keine Daten</div>
+          )}
         </div>
       </article>
     </Link>

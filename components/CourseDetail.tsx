@@ -30,7 +30,7 @@ export default function CourseDetail({ course }: { course: Course }) {
     <div className="space-y-10">
       <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <StatTile label="Ø Note" value={active.avgGrade.toFixed(2)} sub={active.semester} />
-        <StatTile label="Bestehensquote" value={`${Math.round(active.passRate * 100)}%`} sub={active.semester} />
+        <StatTile label="Bestehensquote" value={`${active.passRate.toFixed(1)}%`} sub={active.semester} />
         <StatTile label="Prüflinge" value={active.totalStudents.toString()} sub={active.semester} />
       </section>
 

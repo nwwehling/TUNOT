@@ -1,7 +1,35 @@
 import "server-only";
-import { getCourse } from "./dummyCourses";
+import { courses, getCourse } from "./dummyCourses";
 import { adminDb } from "./firebaseAdmin";
 import type { Course, GradeDistribution } from "./types";
+
+export async function getAllCoursesWithFirestore(): Promise<Course[]> {
+  try {
+    const snapshot = await adminDb.collection("courses").get();
+    const hardcodedSlugs = new Set(courses.map(c => c.slug));
+
+    const firestoreCourses: Course[] = snapshot.docs
+      .filter(doc => !hardcodedSlugs.has(doc.id) && doc.data().isFirestore)
+      .map(doc => {
+        const d = doc.data();
+        return {
+          slug: doc.id,
+          name: d.name,
+          moduleId: d.moduleId || undefined,
+          bereich: d.bereich,
+          professor: d.professor,
+          ects: d.ects,
+          description: d.description ?? "",
+          distributions: [],
+          reviews: [],
+        } satisfies Course;
+      });
+
+    return [...courses, ...firestoreCourses];
+  } catch {
+    return courses;
+  }
+}
 
 export async function getCourseWithDistributions(slug: string): Promise<Course | undefined> {
   const hardcoded = getCourse(slug);

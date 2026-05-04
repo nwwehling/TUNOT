@@ -123,9 +123,15 @@ export default function AdminPage() {
 
       <div className="space-y-4">
         {submissions.map(s => (
-          <div key={s.id} className="rounded-xl border border-border p-5 space-y-4">
-            <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm">
+          <div key={s.id} className={`rounded-xl border p-5 space-y-4 ${s.isNewCourse ? "border-amber-300 bg-amber-50/40" : "border-border"}`}>
+            <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm items-center">
+              {s.isNewCourse && (
+                <span className="rounded-full bg-amber-100 text-amber-800 text-xs font-semibold px-2 py-0.5">Neues Fach</span>
+              )}
               <span className="font-semibold text-tu-greenDark">{s.courseName}</span>
+              {s.isNewCourse && s.moduleId && <span className="text-muted">{s.moduleId}</span>}
+              {s.isNewCourse && <span className="text-muted">{s.bereich} · {s.ects} ECTS</span>}
+              {s.isNewCourse && s.professor && <span className="text-muted">{s.professor}</span>}
               <span className="text-muted">{s.semester}</span>
               <span className="text-muted">{s.totalStudents} Studierende</span>
               <span className="text-muted">Ø {s.avgGrade.toFixed(2)}</span>
