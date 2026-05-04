@@ -2,9 +2,12 @@ import { notFound } from "next/navigation";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import CourseDetail from "@/components/CourseDetail";
 import Sidebar from "@/components/Sidebar";
-import { getAllCourses, getCourseBySlug } from "@/lib/data";
+import { getAllCourses } from "@/lib/data";
+import { getCourseWithDistributions } from "@/lib/serverData";
 import { bereichSidebar } from "@/lib/sidebar";
 import { BEREICH_LABEL, SUBTYPE_LABEL } from "@/lib/types";
+
+export const revalidate = 60;
 
 export function generateStaticParams() {
   return getAllCourses().map(c => ({ slug: c.slug }));
@@ -12,7 +15,7 @@ export function generateStaticParams() {
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const course = getCourseBySlug(slug);
+  const course = await getCourseWithDistributions(slug);
   if (!course) return notFound();
 
   const bereichHref =
