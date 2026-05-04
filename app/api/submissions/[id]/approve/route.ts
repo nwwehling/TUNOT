@@ -1,4 +1,5 @@
 import { adminDb } from "@/lib/firebaseAdmin";
+import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 function isAdmin(req: NextRequest) {
@@ -20,6 +21,18 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
   const data = sub.data()!;
 
+  if (data.isNewCourse) {
+    await adminDb.collection("courses").doc(data.courseSlug).set({
+      name: data.courseName,
+      moduleId: data.moduleId ?? "",
+      bereich: data.bereich,
+      ects: data.ects,
+      professor: data.professor,
+      description: "",
+      isFirestore: true,
+    });
+  }
+
   await adminDb
     .collection("courses")
     .doc(data.courseSlug)
@@ -34,6 +47,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     });
 
   await subRef.update({ status: "approved" });
+
+  revalidatePath(`/course/${data.courseSlug}`);
 
   return NextResponse.json({ ok: true });
 }

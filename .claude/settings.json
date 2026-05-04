@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:www.dr-datenschutz.de)",
+      "WebFetch(domain:www.bfdi.bund.de)",
+      "WebFetch(domain:www.etit.tu-darmstadt.de)",
+      "WebFetch(domain:fragdenstaat.de)",
+      "WebFetch(domain:www.uni-due.de)",
+      "WebFetch(domain:de.wikipedia.org)",
+      "Bash(npx tsc *)"
+    ]
+  }
+}

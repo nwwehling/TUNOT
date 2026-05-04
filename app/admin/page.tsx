@@ -4,8 +4,13 @@ import { useEffect, useState } from "react";
 
 type Submission = {
   id: string;
+  isNewCourse?: boolean;
   courseSlug: string;
   courseName: string;
+  moduleId?: string;
+  bereich?: string;
+  ects?: number;
+  professor?: string;
   semester: string;
   grades: Record<string, number>;
   passRate: number;
@@ -38,10 +43,13 @@ export default function AdminPage() {
         headers: { "x-admin-token": t },
       });
       if (res.status === 401) { setError("Falsches Passwort."); setToken(""); sessionStorage.removeItem("admin-token"); return; }
-      if (!res.ok) throw new Error("Serverfehler");
+      if (!res.ok) {
+        const body = await res.text();
+        throw new Error(`Serverfehler ${res.status}: ${body}`);
+      }
       setSubmissions(await res.json());
-    } catch {
-      setError("Fehler beim Laden der Einreichungen.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Fehler beim Laden der Einreichungen.");
     } finally {
       setLoading(false);
     }

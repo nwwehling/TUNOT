@@ -4,24 +4,39 @@ import { adminDb } from "./firebaseAdmin";
 import type { Course, GradeDistribution } from "./types";
 
 export async function getCourseWithDistributions(slug: string): Promise<Course | undefined> {
-  const course = getCourse(slug);
-  if (!course) return undefined;
+  const hardcoded = getCourse(slug);
 
   try {
-    const snapshot = await adminDb
+    const distSnap = await adminDb
       .collection("courses")
       .doc(slug)
       .collection("distributions")
       .get();
 
-    if (snapshot.empty) return course;
+    const firestoreDistributions = distSnap.docs.map(doc => doc.data() as GradeDistribution);
 
-    const firestoreDistributions = snapshot.docs.map(
-      doc => doc.data() as GradeDistribution
-    );
+    if (hardcoded) {
+      if (distSnap.empty) return hardcoded;
+      return { ...hardcoded, distributions: [...hardcoded.distributions, ...firestoreDistributions] };
+    }
 
-    return { ...course, distributions: [...course.distributions, ...firestoreDistributions] };
+    // Course not in hardcoded data — check Firestore for course metadata
+    const courseSnap = await adminDb.collection("courses").doc(slug).get();
+    if (!courseSnap.exists) return undefined;
+
+    const meta = courseSnap.data()!;
+    return {
+      slug,
+      name: meta.name,
+      moduleId: meta.moduleId || undefined,
+      bereich: meta.bereich,
+      professor: meta.professor,
+      ects: meta.ects,
+      description: meta.description ?? "",
+      distributions: firestoreDistributions,
+      reviews: [],
+    } satisfies Course;
   } catch {
-    return course;
+    return hardcoded;
   }
 }

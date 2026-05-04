@@ -17,6 +17,15 @@ export default function Navbar() {
               Notenverzeichnis Informatik
             </span>
           </Link>
+
+          <div className="ml-auto">
+            <Link
+              href="/submit"
+              className="inline-flex items-center gap-1.5 rounded-md bg-tu-black/10 hover:bg-tu-black/20 px-3 py-1.5 text-xs font-semibold text-tu-black transition-colors no-underline"
+            >
+              <span>+ Noten einreichen</span>
+            </Link>
+          </div>
         </div>
       </div>
 

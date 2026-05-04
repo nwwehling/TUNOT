@@ -13,9 +13,10 @@ export async function GET(req: NextRequest) {
   const snapshot = await adminDb
     .collection("submissions")
     .where("status", "==", "pending")
-    .orderBy("submittedAt", "desc")
     .get();
 
-  const submissions = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  const submissions = snapshot.docs
+    .map(doc => ({ id: doc.id, ...doc.data() }))
+    .sort((a: any, b: any) => (b.submittedAt?.seconds ?? 0) - (a.submittedAt?.seconds ?? 0));
   return NextResponse.json(submissions);
 }
