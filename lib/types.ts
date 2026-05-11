@@ -14,6 +14,7 @@ export type GradeDistribution = {
   passRate: number;
   avgGrade: number;
   totalStudents: number;
+  isDummy?: boolean;
 };
 
 export type Review = {

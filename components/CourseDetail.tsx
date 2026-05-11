@@ -30,7 +30,7 @@ export default function CourseDetail({ course }: { course: Course }) {
     <div className="space-y-10">
       <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <StatTile label="Ø Note" value={active.avgGrade.toFixed(2)} sub={active.semester} />
-        <StatTile label="Bestehensquote" value={`${active.passRate.toFixed(1)}%`} sub={active.semester} />
+        <StatTile label="Bestehensquote" value={`${Math.round(active.passRate * 100)}%`} sub={active.semester} />
         <StatTile label="Prüflinge" value={active.totalStudents.toString()} sub={active.semester} />
       </section>
 
@@ -45,19 +45,33 @@ export default function CourseDetail({ course }: { course: Course }) {
                     key={d.semester}
                     type="button"
                     onClick={() => setSemIdx(i)}
-                    className={`whitespace-nowrap px-3 py-1.5 rounded border transition-colors ${
+                    className={`whitespace-nowrap px-3 py-1.5 rounded border transition-colors inline-flex items-center gap-1.5 ${
                       i === semIdx
-                        ? "bg-tu-greenDark text-white border-tu-greenDark"
-                        : "bg-card border-rule text-muted hover:bg-tu-greenFaint hover:border-tu-greenSoft"
+                        ? d.isDummy
+                          ? "bg-amber-100 text-amber-900 border-amber-300"
+                          : "bg-tu-greenDark text-white border-tu-greenDark"
+                        : d.isDummy
+                          ? "bg-card border-dashed border-rule text-muted hover:border-amber-300 hover:text-amber-700"
+                          : "bg-card border-rule text-muted hover:bg-tu-greenFaint hover:border-tu-greenSoft"
                     }`}
                   >
                     {d.semester}
+                    {d.isDummy && (
+                      <span className={`text-[9px] uppercase tracking-wider font-semibold ${i === semIdx ? "text-amber-800" : "text-amber-600"}`}>
+                        vorl.
+                      </span>
+                    )}
                   </button>
                 ))}
               </div>
             </div>
           )}
         </div>
+        {active.isDummy && (
+          <div className="mb-3 rounded-md border border-amber-300 bg-amber-50 px-3 py-2 font-sans text-xs text-amber-900">
+            <strong>Vorläufige Verteilung</strong> — generiert auf Basis der Modul-Charakteristik. Reiche eine echte Notenverteilung über <a href="/submit" className="underline underline-offset-2">Noten einreichen</a> ein.
+          </div>
+        )}
         <div className="bg-card rounded-card shadow-card border border-rule p-5">
           <GradeBarChart distribution={active} />
         </div>

@@ -8,7 +8,9 @@
       "WebFetch(domain:fragdenstaat.de)",
       "WebFetch(domain:www.uni-due.de)",
       "WebFetch(domain:de.wikipedia.org)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(curl -s -o /dev/null -w \"Home: %{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"API: %{http_code}\\\\n\" http://localhost:3000/api/courses/firestore)"
     ]
   }
 }

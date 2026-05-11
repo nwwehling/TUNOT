@@ -33,7 +33,6 @@ export default function SubmitForm({ courses }: Props) {
   const [newModuleId, setNewModuleId] = useState("");
   const [newBereich, setNewBereich] = useState<Bereich>("wahl");
   const [newEcts, setNewEcts] = useState("");
-  const [newProfessor, setNewProfessor] = useState("");
 
   // Shared fields
   const [semesterChoice, setSemesterChoice] = useState("");
@@ -80,7 +79,7 @@ export default function SubmitForm({ courses }: Props) {
   const selectedCourse = courses.find(c => c.slug === courseSlug);
 
   const courseReady = isNewCourse
-    ? newName.trim() && newEcts && newProfessor.trim()
+    ? newName.trim() && newEcts
     : !!courseSlug;
 
   function setGrade(key: GradeKey, raw: string) {
@@ -90,7 +89,7 @@ export default function SubmitForm({ courses }: Props) {
 
   function resetForm() {
     setCourseSlug(""); setNewName(""); setNewModuleId(""); setNewBereich("wahl");
-    setNewEcts(""); setNewProfessor(""); setSemesterChoice(""); setCustomSemester("");
+    setNewEcts(""); setSemesterChoice(""); setCustomSemester("");
     setGrades(emptyGrades());
   }
 
@@ -104,7 +103,7 @@ export default function SubmitForm({ courses }: Props) {
     setErrorMsg("");
     try {
       const body = isNewCourse
-        ? { isNewCourse: true, courseName: newName.trim(), moduleId: newModuleId.trim(), bereich: newBereich, ects: Number(newEcts), professor: newProfessor.trim(), semester, grades }
+        ? { isNewCourse: true, courseName: newName.trim(), moduleId: newModuleId.trim(), bereich: newBereich, ects: Number(newEcts), professor: "", semester, grades }
         : { isNewCourse: false, courseSlug, courseName: selectedCourse!.name, semester, grades };
 
       const res = await fetch("/api/submissions", {
@@ -225,17 +224,6 @@ export default function SubmitForm({ courses }: Props) {
                   <option key={b} value={b}>{BEREICH_LABEL[b]}</option>
                 ))}
               </select>
-            </div>
-            <div className="space-y-2">
-              <label className="label block">Professor/in <span className="text-red-500">*</span></label>
-              <input
-                type="text"
-                value={newProfessor}
-                onChange={e => setNewProfessor(e.target.value)}
-                placeholder="z.B. Prof. Dr. Müller"
-                required
-                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-tu-green"
-              />
             </div>
           </div>
         </div>

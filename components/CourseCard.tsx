@@ -16,7 +16,7 @@ export default function CourseCard({ course }: { course: Course }) {
         )}
         <h3 className="font-serif text-[1.05rem] leading-snug mb-1 text-ink group-hover:text-tu-greenDark transition-colors">{course.name}</h3>
         <div className="font-sans text-xs text-muted mb-3">
-          {course.professor} · {course.ects} CP{course.semester && ` · ${course.semester}. Sem.`}
+          {course.ects} CP{course.semester && ` · ${course.semester}. Sem.`}
         </div>
         {course.fachgebiete && course.fachgebiete.length > 0 && (
           <div className="flex flex-wrap gap-1 mb-3">
@@ -27,15 +27,20 @@ export default function CourseCard({ course }: { course: Course }) {
             ))}
           </div>
         )}
-        <div className="grid grid-cols-3 gap-2 border-t border-rule pt-3 mt-auto">
+        <div className={`border-t pt-3 mt-auto ${latest?.isDummy ? "border-dashed border-amber-300" : "border-rule"}`}>
           {latest ? (
             <>
-              <Stat label="Ø Note" value={latest.avgGrade.toFixed(2)} />
-              <Stat label="Bestanden" value={`${latest.passRate.toFixed(1)}%`} />
-              <Stat label="Prüflinge" value={latest.totalStudents.toString()} />
+              <div className="grid grid-cols-3 gap-2">
+                <Stat label="Ø Note" value={latest.avgGrade.toFixed(2)} dim={!!latest.isDummy} />
+                <Stat label="Bestanden" value={`${Math.round(latest.passRate * 100)}%`} dim={!!latest.isDummy} />
+                <Stat label="Prüflinge" value={latest.totalStudents.toString()} dim={!!latest.isDummy} />
+              </div>
+              {latest.isDummy && (
+                <div className="font-sans text-[9px] uppercase tracking-wider text-amber-700 mt-1.5">vorläufige Daten</div>
+              )}
             </>
           ) : (
-            <div className="col-span-3 font-sans text-[10px] text-muted">Noch keine Daten</div>
+            <div className="font-sans text-[10px] text-muted">Noch keine Daten</div>
           )}
         </div>
       </article>
@@ -43,11 +48,11 @@ export default function CourseCard({ course }: { course: Course }) {
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+function Stat({ label, value, dim }: { label: string; value: string; dim?: boolean }) {
   return (
     <div>
       <div className="font-sans text-[9px] uppercase tracking-wider text-muted mb-0.5">{label}</div>
-      <div className="font-serif text-[1rem] tabular-nums font-semibold">{value}</div>
+      <div className={`font-serif text-[1rem] tabular-nums font-semibold ${dim ? "text-ink/55 italic" : ""}`}>{value}</div>
     </div>
   );
 }

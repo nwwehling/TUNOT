@@ -49,8 +49,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             {course.name}
           </h1>
           <div className="mt-4 font-sans text-sm text-muted flex flex-wrap gap-x-6 gap-y-1">
-            <span>{course.professor}</span>
-            <span>{course.ects} ECTS</span>
+<span>{course.ects} ECTS</span>
             <span>{course.distributions.length} Semester erfasst</span>
           </div>
         </header>

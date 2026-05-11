@@ -13,12 +13,18 @@ export default function CourseRow({ course }: { course: Course }) {
         <div className="font-serif text-[14px] leading-snug text-ink group-hover:text-tu-greenDark transition-colors truncate">
           {course.name}
         </div>
-        <div className="font-sans text-[11px] text-muted mt-0.5 truncate">{course.professor}</div>
       </div>
-      <div className="shrink-0 text-right">
-        <div className="font-sans text-xs tabular-nums font-semibold text-ink">{d.avgGrade.toFixed(2)}</div>
-        <div className="font-sans text-[10px] text-muted tabular-nums">{Math.round(d.passRate * 100)}% best.</div>
-      </div>
+      {d ? (
+        <div className="shrink-0 text-right">
+          <div className={`font-sans text-xs tabular-nums font-semibold ${d.isDummy ? "text-ink/55 italic" : "text-ink"}`}>
+            {d.avgGrade.toFixed(2)}
+            {d.isDummy && <span className="ml-1 text-[9px] uppercase tracking-wider text-amber-600 not-italic font-semibold">vorl.</span>}
+          </div>
+          <div className="font-sans text-[10px] text-muted tabular-nums">{Math.round(d.passRate * 100)}% best.</div>
+        </div>
+      ) : (
+        <div className="shrink-0 font-sans text-[10px] text-muted">—</div>
+      )}
     </Link>
   );
 }

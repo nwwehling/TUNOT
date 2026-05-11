@@ -29,7 +29,7 @@ function seminarDist(moduleId: string, capacity: number): GradeDistribution {
   const grades = weights.map(w => Math.max(0, Math.round((w / total) * enrolled)));
   const diff = enrolled - grades.reduce((a, b) => a + b, 0);
   grades[3] += diff; // adjust into grade 2.0 bucket
-  return dist("SS26", grades, enrolled);
+  return { ...dist("SS26", grades, enrolled), isDummy: true };
 }
 
 function seminar(moduleId: string, name: string, professor: string, capacity: number): Course {
@@ -52,7 +52,7 @@ function praktikumDist(moduleId: string, capacity: number): GradeDistribution {
   const grades = weights.map(w => Math.max(0, Math.round((w / total) * enrolled)));
   const diff = enrolled - grades.reduce((a, b) => a + b, 0);
   grades[3] += diff;
-  return dist("SS26", grades, enrolled);
+  return { ...dist("SS26", grades, enrolled), isDummy: true };
 }
 
 function praktikum(moduleId: string, name: string, professor: string, capacity: number): Course {
@@ -127,7 +127,7 @@ function vorlesungDist(moduleId: string, capacity: number, sem: string): GradeDi
   const grades = weights.map(w => Math.max(0, Math.round((w / total) * enrolled)));
   const diff = enrolled - grades.reduce((a, b) => a + b, 0);
   grades[4] += diff;
-  return dist(sem, grades, enrolled);
+  return { ...dist(sem, grades, enrolled), isDummy: true };
 }
 
 function vorlesung(

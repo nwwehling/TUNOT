@@ -45,7 +45,10 @@ export async function getCourseWithDistributions(slug: string): Promise<Course |
 
     if (hardcoded) {
       if (distSnap.empty) return hardcoded;
-      return { ...hardcoded, distributions: [...hardcoded.distributions, ...firestoreDistributions] };
+      // Add only Firestore semesters not already present in hardcoded data
+      const hardcodedSemesters = new Set(hardcoded.distributions.map(d => d.semester));
+      const newDistributions = firestoreDistributions.filter(d => !hardcodedSemesters.has(d.semester));
+      return { ...hardcoded, distributions: [...hardcoded.distributions, ...newDistributions] };
     }
 
     // Course not in hardcoded data — check Firestore for course metadata

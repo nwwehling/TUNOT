@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     }
 
     const passing = GRADE_STEPS.filter(k => k !== "5.0").reduce((sum, k) => sum + (grades[k] ?? 0), 0);
-    const passRate = Math.round((passing / totalStudents) * 1000) / 10;
+    const passRate = passing / totalStudents;
     const weighted = GRADE_STEPS.reduce((sum, k) => sum + parseFloat(k) * (grades[k] ?? 0), 0);
     const avgGrade = Math.round((weighted / totalStudents) * 100) / 100;
 
